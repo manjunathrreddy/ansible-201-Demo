@@ -1,0 +1,26 @@
+---
+# tasks file for apache
+#
+#
+ - hosts: webservers
+   tasks:
+
+   - name: Install apache on the dedicated webservers
+     yum: name=httpd state=present
+     become_user: root
+
+   - name: Copy the Webpage to the apache directory
+     copy: 
+       src: files/index.html 
+       dest: /var/www/html/index.html 
+       owner: root
+       group: root
+       mode: 777
+       #remote_src: yes
+     become_user: root
+   
+   - name: start apache services
+     service: name=httpd state=started enabled=yes
+     become_user: root
+
+
